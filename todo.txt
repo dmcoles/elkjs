@@ -1,0 +1,13 @@
+[x] display modes 1-5
+[x] rtc
+[x] sound
+[ ] other interrupts
+[x] palette
+[p] loading/saving
+[p] snapshots
+[x] fix keyboard
+[ ] finish full keymap
+[x] frame rate fix
+[x] theme jquery ui
+[ ] snapper speed issue
+[ ] tape position dialog

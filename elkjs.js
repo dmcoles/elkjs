@@ -87,14 +87,15 @@ function ElkJs(output) {
 				display.startFrame();
 				sound.startFrame();
 				while (display.beamRow<312) {
+					display.startRow();
 					processor.runCode();
 					display.processRow();
 					sound.processRow();
 					tape.process();
-					if (display.beamRow==100) {
+					if (display.beamRow==99) {
 						sheila.trigger_rtc();
 					}
-					if (display.beamRow==256) {
+					if (display.beamRow==255) {
 						sheila.trigger_vbl();
 					}
 				}
@@ -110,13 +111,17 @@ function ElkJs(output) {
 		setTimeout(runframe, nextframe );
 		//requestAnimationFrame(runframe);
 	}
-	
-	self.reset = function(){
-		memory.reset();
-		sheila.reset();
-		display.reset();
-		processor.reset6502();
 
+    function autoLoad() {
+        self.reset();
+        keyboard.autoLoad();    
+    }
+
+	self.reset = function () {
+	    memory.reset();
+	    sheila.reset();
+	    display.reset();
+	    processor.reset6502();
 	};
 	
 	self.pauseResume = function() {
@@ -130,7 +135,7 @@ function ElkJs(output) {
 	}
 	
 	self.openFile = function(file) {
-		 uefHandler.loadUEF(file);
+		 uefHandler.loadUEF(file,autoLoad);
 	}
 	
 	self.setLoadSpeed = function(speed) {

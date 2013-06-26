@@ -38,13 +38,13 @@
 		<div id="accordion">
 			<h3>Acorn Electron</h3>
 			<div>
-			<img src="320px-Acorn_Electron_4x3.jpg"> </img>
+			<img src="320px-Acorn_Electron_4x3.jpg"/>
 			Released in 1983, the Acorn Electron was Acorn's most popular home computer and for a while was the 3rd best selling home computer in the UK.
 			<br/><br/>The Electron was an 8 bit microcomputer based around the 6502 processor with 32k of RAM and used BBC Basic as its programming language.
 			</div>
 			<h3>ElkJs</h3>
 			<div>ElkJS is a javascript based emulator for the Acorn Electron. I was inspired to write this after contributing some work to the JSSpeccy project by Matt Westcott. The Sinclair Spectrum and Acorn Electron were two memorable machines from my younger years so I decided to write a Javascript Electron emulator as one did not already exist.<br/><br/>
-			<img src="acorn-electron-det2.jpg" > </img><br/><br/>
+			<img src="acorn-electron-det2.jpg"/><br/><br/>
 			ElkJS aims to emulate the electron accurately enough to be able to play many of the classic games made for this machine. Some of my favourites are
 			<ul>
 			<li>Citadel</li>
@@ -63,11 +63,11 @@
 			Inflate and Zipping routines - August Lilleaas and M. Izumo <br/>
 			Everything else - (c) Darren Coles 2013.<br/><br/>
 			Other Electron emulators of note:<br/><br/>
-			<a href="elkulator.acornelectron.co.uk" >Elkulator</a>
-			<a href="www.acornelectron.co.uk/emulation/electrem/top_lvl.html" >ElectrEm</a>		
+			<a href="http://elkulator.acornelectron.co.uk" >Elkulator</a>
+			<a href="http://www.acornelectron.co.uk/emulation/electrem/top_lvl.html" >ElectrEm</a>		
 			<br/><br>
 			Other useful Acorn Electron sites:<br/>
-			<a href="www.acornelectron.co.uk" >Acorn Electron World</a>
+			<a href="http://www.acornelectron.co.uk" >Acorn Electron World</a>
 			<a href="http://www.stairwaytohell.com/" >Stairway to hell</a>
 			<a href="http://en.wikipedia.org/wiki/Acorn_Electron" >Wikipedia Acorn Electron Article</a>
 			</div>
@@ -80,25 +80,17 @@
 			<button onclick="pauseResume()" id="btnPause">Pause</button>
 			<button onclick="soundToggle()" id="btnSound">Sound off</button>
 			<button onclick="document.getElementById('selectedFile').click();" id="btnBrowse">Browse</button>
-			<button onclick="openFile()" id="btnOpen">Open</button>
-			<select id="snapshotselect">
-				<option value="dunjunz_snap.uef">Dunjunz</option>
-				<option value="snapper_snap.uef">Snapper</option>
-				<option value="exile_snap.uef">Exile</option>
-				<option value="citadel_snap.uef">Citadel</option>
-				<option value="Elite_snap.uef">Elite</option>
-			</select> 
 			<input type="file" id="selectedFile" style="display: none;" />
 			<br/>
 			</div>
-			<div>
+			<div class="ui-widget">
 			Loading speed:
 			<select id="loadSpeed">
 				<option value="1">Normal</option>
-				<option value="4">Fast</option>
-				<option value="8">Turbo</option>
+				<option selected="selected" value="2">Turbo</option>
 			</select> 
-			<input type="checkbox" name="autoLoad" checked="checked" onclick="changeAutoLoad()" value="autoLoad">Auto load tapes<br>			
+			<input type="checkbox" id="autoLoad" checked="checked" onclick="changeAutoLoad()" >Auto load tapes<br>			
+            
 			</div>
 		</div>
 		

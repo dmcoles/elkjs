@@ -31,7 +31,7 @@ ElkJs.Sound = function(opts) {
 		audioNode.onaudioprocess = onAudioProcess;
 		audioNode.connect(audioContext.destination);
 	}
-	else if (typeof(Audio) != 'undefined') {
+	else if (typeof(Audio) != 'undefined' && typeof(Audio.mozSetup) != 'undefined') {
 		/* Use audio data api */
 		audioBuffer = new Array();
 		audioOutput = new Audio();

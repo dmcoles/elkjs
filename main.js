@@ -18,7 +18,7 @@ function pauseResume() {
 }
 
 function openFile() {
-	elkjs.openFile( $("#snapshotselect").val());
+	elkjs.openFile( $("#gameSelect").val());
 }
 
 function changeLoadSpeed() {
@@ -34,7 +34,7 @@ function fileSelected(evt) {
 }
 
 function changeAutoLoad() {
-	elkjs.setAutoLoad($('#autoLoad').is(':checked'));
+	elkjs.setAutoLoad($('#autoLoad').prop('checked'));
 }
 
 function soundToggle() {

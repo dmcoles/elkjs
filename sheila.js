@@ -44,6 +44,7 @@ ElkJs.Sheila = function() {
 	self.palette = new Array(16);
 	for (var i = 0; i<16; i++) self.palette[i] = 0;
 
+	self.casetteDataRead = false;
 	
 //FEx0 - interrupt status and control (R/W)
 //	7 - not used
@@ -304,6 +305,7 @@ ElkJs.Sheila = function() {
 		}
 		else if (addr == 4) {
 			interrupt_status.receive = false;
+			self.casetteDataRead = true;			
 			return tapeData;
 		}
 		

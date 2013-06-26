@@ -31,11 +31,15 @@ ElkJs.Sound = function(opts) {
 		audioNode.onaudioprocess = onAudioProcess;
 		audioNode.connect(audioContext.destination);
 	}
-	else if (typeof(Audio) != 'undefined' && typeof(Audio.mozSetup) != 'undefined') {
-		/* Use audio data api */
-		audioBuffer = new Array();
+	else if (typeof(Audio) != 'undefined'){
 		audioOutput = new Audio();
-		audioOutput.mozSetup(1, samplesPerFrame*50);
+		if (typeof(audioOutput.mozSetup) != 'undefined')  {
+			/* Use audio data api */
+			audioBuffer = new Array();
+			audioOutput.mozSetup(1, samplesPerFrame*50);
+		} else {
+			audioOutput = null;
+		}
 	}
 	
 	
@@ -70,11 +74,11 @@ ElkJs.Sound = function(opts) {
 		
 	}
 	
-	function makeSample(freq,count) {
+	function makeSample(freq,mode,count) {
 		if (audioBuffer==null) return;
 		for (var i=0; i<count; i++) {
 			frameSamples++;
-			if (!freq) {
+			if (!freq | mode!=1) {
 				audioBuffer.push(0);
 			}
 			else {
@@ -105,13 +109,13 @@ ElkJs.Sound = function(opts) {
 	}
 
 	self.endFrame = function(enabled) {
-		makeSample(sheila.soundFreq,samplesPerFrame-frameSamples);
+		makeSample(sheila.soundFreq,sheila.soundMode, samplesPerFrame-frameSamples);
 		writeSampleData(enabled);
 	}
 	
 	self.processRow = function() {
 		rowCount++
-		makeSample(sheila.soundFreq, samplesPerFrame/312 * rowCount-frameSamples);
+		makeSample(sheila.soundFreq, sheila.soundMode, samplesPerFrame/312 * rowCount-frameSamples);
 		
 	}
 	

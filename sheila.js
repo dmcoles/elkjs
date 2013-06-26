@@ -258,9 +258,9 @@ ElkJs.Sheila = function() {
 			check_interrupts();
 		}
 		else if (addr == 6) {
-			if (self.soundMode==1) {
+			//if (self.soundMode==1) {
 				self.soundFreq = 1000000 / (16 * (val + 1));
-			}
+			//}
 		}
 		else if (addr == 7) {
 			//FEx7 (misc control)
@@ -270,9 +270,9 @@ ElkJs.Sheila = function() {
 			self.screenMode = (val & 0x38) >> 3;
 			recalcPalette();
 			self.soundMode = (val &6)>>1;
-			if (self.soundMode!=1) {
-				self.soundFreq=0;
-			}
+			//if (self.soundMode!=1) {
+			//	self.soundFreq=0;
+			//}
 			
 		}
 		else if (addr>7) {

@@ -270,9 +270,9 @@ ElkJs.Sheila = function() {
 			self.screenMode = (val & 0x38) >> 3;
 			recalcPalette();
 			self.soundMode = (val &6)>>1;
-			//if (self.soundMode!=1) {
-			//	self.soundFreq=0;
-			//}
+			if (self.soundMode!=1) {
+				self.soundFreq=0;
+			}
 			
 		}
 		else if (addr>7) {

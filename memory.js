@@ -49,12 +49,7 @@ ElkJs.Memory = function(opts) {
 	}*/
 	
 	load_binary_resource('./os.rom','os');
-	roms["rom08"] = new Uint8Array(16384);
-	roms["rom09"] = new Uint8Array(16384);
-	load_binary_resource('./basic.rom','rom10');
-	load_binary_resource('./basic.rom','rom11');
-	roms["rom12"] = new Uint8Array(16384);
-	roms["rom13"] = new Uint8Array(16384);
+	load_binary_resource('./basic.rom','basic');
 
 	self.readmem = function(addr,direct) {
 		if (addr<0x8000) {
@@ -63,7 +58,22 @@ ElkJs.Memory = function(opts) {
 		}
 		if (addr<0xC000)
         {
-                if (!sheila.extRom)
+				var rombank = sheila.romBank;
+				switch (rombank) {
+					case 8:
+					case 9:
+						return keyboard.readkeys(addr);
+					case 10:
+					case 11:
+						return roms["basic"][addr&0x3FFF];
+					default:
+						return roms["basic"][addr&0x3FFF];
+						//return addr>>8;
+				}
+				
+
+
+                /*if (!sheila.extRom)
                 {
                         if (sheila.intRomBank&2) return roms["rom10"][addr&0x3FFF];
                         return keyboard.readkeys(addr);
@@ -75,7 +85,7 @@ ElkJs.Memory = function(opts) {
                 if (rombank==0x1) return  roms["rom13"][addr&0x3FFF];
                 
 				//return roms["rom10"][addr&0x3FFF];
-                return addr>>8;
+                return addr>>8;*/
         }		
 		
 		if ((addr&0xFF00)==0xFE00) {

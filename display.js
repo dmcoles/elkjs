@@ -779,26 +779,6 @@ ElkJs.Display = function (opts) {
         }
         else {
             screenRowStart += widths[sheila.screenMode] - 7;
-			
-			if (screenRowStart>32767) {
-				switch(sheila.screenMode){
-					case 0:
-					case 1:
-					case 2:
-					case 3:
-						screenRowStart-=0x5000;
-						break;
-					case 4:
-					case 5:
-						screenRowStart-=0x2800;
-						break;
-					case 6:
-					case 7:
-						screenRowStart-=0x2000;
-						break;
-				}
-			}
-			
         }
 
 

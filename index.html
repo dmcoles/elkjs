@@ -22,6 +22,25 @@
 		<script src="uef_file.js"></script>
 		<script src="main.js"></script>
 		
+		<script>
+		$(function() {
+			/*$("#tapeDialog").dialog({
+				autoOpen: false,
+				width: 600,
+				height: 400,
+				buttons: [
+					{
+						text: "Ok",
+						click: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				]
+				
+			});*/	
+		});
+		
+		</script>
 
 		<script>
 			$(function() {
@@ -30,6 +49,7 @@
 				document.getElementById('loadSpeed').addEventListener('change', changeLoadSpeed, false);
 				$( "#accordion" ).accordion();
 				elkjs = ElkJs("ElkJsOutput");
+
 			});
 		</script>
 	</head>
@@ -81,6 +101,7 @@
 			<button onclick="soundToggle()" id="btnSound">Sound off</button>
 			<button onclick="document.getElementById('selectedFile').click();" id="btnBrowse">Browse</button>
 			<input type="file" id="selectedFile" style="display: none;" />
+			<button onclick="toggleDialog()" >Tape</button>
 			<br/>
 			</div>
 			<div class="ui-widget">
@@ -93,8 +114,8 @@
             
 			</div>
 		</div>
-		
-		
+		<div id="tapeDialog">
+		</div>
 	</body>
 </html>
 	

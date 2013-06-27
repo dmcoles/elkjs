@@ -42,7 +42,7 @@ ElkJs.Keyboard = function () {
         37: { row: 1, mask: 0x1 }, /* left arrow */
         39: { row: 0, mask: 0x1 }, /* right arrow */
 
-        20: { row: 13, mask: 0x2 }, /* CAPS */
+        18: { row: 13, mask: 0x2 }, /* ALT = FUNC */
         81: { row: 12, mask: 0x2 }, /* Q */
         87: { row: 11, mask: 0x2 }, /* W */
         69: { row: 10, mask: 0x2 }, /* E */
@@ -120,6 +120,8 @@ ElkJs.Keyboard = function () {
 
     self.readkeys = function (addr) {
 
+        if (autoKeys && addr==40960) autoKeyPress();
+
         var key = 0;
 
         for (var i = 0; i < 14; i++) {
@@ -145,11 +147,10 @@ ElkJs.Keyboard = function () {
         }
 
         if (autoKeyValues.length > 0) {
-            setTimeout(autoKeyPress, 40);
+            setTimeout(autoKeyPress, 80);
         }
-        else {
-            autoKeys = false;
-        }
+        autoKeys = false;
+
     }
 
     self.autoLoad = function () {
@@ -168,7 +169,6 @@ ElkJs.Keyboard = function () {
         autoKeyValues.push("160");
         autoKeyValues.push("131");
         autoKeyValues.push("130");
-        setTimeout(autoKeyPress, 500);
     }
 
     document.onkeydown = keyDown;

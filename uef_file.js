@@ -4,6 +4,8 @@
 ElkJs.UEFFile = function (opts) {
     var self = {};
 
+	var tableName = "";
+	
     var snapshotLoaded = false;
 
     var tapeLoaded = false;
@@ -27,6 +29,8 @@ ElkJs.UEFFile = function (opts) {
 
     var fastLoad = true;
 
+	self.filename = "";
+	
     function load_filereader(file, callback, callback2) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -131,20 +135,27 @@ ElkJs.UEFFile = function (opts) {
                     for (i = 0; i < chunklen; i++) { data.push(buffer[offset + i]); }
                     tapeData.push({
                         type: "implicitDataBlock",
+						desc: "data block",
                         data: data
                     });
                     break;
 
                 case 0x101:
-                    tapeData.push("multiplexed data block");
+                    tapeData.push({
+						desc: "multiplexed data block"
+                    });
                     break;
 
                 case 0x102:
-                    tapeData.push("explicit tape data block");
+                    tapeData.push({
+						desc: "explicit tape data block"
+                    });
                     break;
 
                 case 0x104:
-                    tapeData.push("defined tape format data block");
+                    tapeData.push({
+						desc: "defined tape format data block"
+                    });
                     break;
 
                 case 0x110:
@@ -152,6 +163,7 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "carrier",
+						desc: "carrier",
                         cycleCount: cycleCount
                     });
 
@@ -164,6 +176,7 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "carrierWithDummy",
+						desc: "carrier with dummy byte",
                         preCycleCount: cycleCount1,
                         postCycleCount: cycleCount2
                     });
@@ -176,40 +189,58 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "integerGap",
+						desc: "integer tap",
                         gapTime: gap
                     });
                     break;
 
                 case 0x116:
-                    tapeData.push("floating point gap");
+                    tapeData.push({
+                        desc: "floating point gap"
+                    });
+					
                     break;
 
                 case 0x113:
-                    tapeData.push("change of base frequency");
+                    tapeData.push({
+                        desc: "change of base frequency"
+                    });
                     break;
 
                 case 0x114:
-                    tapeData.push("security cycles");
+                    tapeData.push({
+                        desc: "security cycles"
+                    });
                     break;
 
                 case 0x115:
-                    tapeData.push("phase change");
+                    tapeData.push({
+                        desc: "phase change"
+                    });
                     break;
 
                 case 0x117:
-                    tapeData.push("data encoding format change");
+                    tapeData.push({
+                        desc: "data encoding format change"
+                    });
                     break;
 
                 case 0x120:
-                    tapeData.push("position marker");
+                    tapeData.push({
+                        desc: "position marker"
+                    });
                     break;
 
                 case 0x130:
-                    tapeData.push("tape set info");
+                    tapeData.push({
+                        desc: "tape set info"
+                    });
                     break;
 
                 case 0x131:
-                    tapeData.push("start of tape side");
+                    tapeData.push({
+                        desc: "start of tape side"
+                    });
                     break;
 
             }
@@ -226,10 +257,12 @@ ElkJs.UEFFile = function (opts) {
 
     self.loadUEF = function (file,autoLoadCallback) {
         if (Object.prototype.toString.call(file) == '[object File]') {
+			self.filename = file.filename;
             load_filereader(file, processUEF, autoLoadCallback);
         }
         else {
             load_binary_resource(file, processUEF, autoLoadCallback)
+			self.filename=file;
         }
     }
 
@@ -299,6 +332,7 @@ ElkJs.UEFFile = function (opts) {
         }
 
         if (processNext) {
+			if (tableName!="") self.populateTapeDataTable(tableName);
             if (++tapePos > tapeData.length) {
                 tapePos = 0;
             }
@@ -327,5 +361,69 @@ ElkJs.UEFFile = function (opts) {
         fastLoad = speed > 1;
     }
 
+	self.populateTapeDataTable = function(tablename) {
+		tableName = tablename;
+		$("#"+tablename+" tr").remove();
+		$("#"+tablename).append('<tr style="height: 20px;background-color: blue"><th> Chunk</th><th> Description</th></tr>');
+		if (!tapeData) return;
+		
+		for (var i = 0; i<tapeData.length; i++) {
+			if (i==tapePos) {
+				$("#"+tablename).append('<tr style="height: 20px;background-color: white"><td>'+i.toString()+'</td><td>'+tapeData[i].desc+'</td></tr>');
+			}
+			else {
+				$("#"+tablename).append('<tr style="height: 20px;background-color: gray"><td>'+i.toString()+'</td><td>'+tapeData[i].desc+'</td></tr>');
+			}
+		}
+	}
+	
+	self.tapeFwd = function() {
+		if (!tapeData) return;
+		if (tapePos<tapeData.length-1) tapePos++;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+		if (tableName!="") self.populateTapeDataTable(tableName);
+	}
+	
+	self.tapeRew = function() {
+		if (!tapeData) return;
+		if (tapePos>0) tapePos--;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+		if (tableName!="") self.populateTapeDataTable(tableName);
+	}
+
+	self.tapeFirst = function() {
+		if (!tapeData) return;
+		tapePos = 0;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+		if (tableName!="") self.populateTapeDataTable(tableName);
+	}
+	
+	self.tapeLast = function() {
+		if (!tapeData) return;
+		tapePos = tapeData.length-1;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+		if (tableName!="") self.populateTapeDataTable(tableName);
+	}
+
+	self.tapeEject = function() {
+		if (!tapeData) return;
+		tapeLoaded = false;
+		tapeData = new Array();
+		tapePos = 0;
+		if (tableName!="") self.populateTapeDataTable(tableName);
+	}
+	
     return self;
 }

@@ -46,3 +46,50 @@ function soundToggle() {
 		$("#btnSound span").text("Sound on");
 	}
 }
+
+function toggleDialog() {
+
+	$("#tapeDialog").load("tapedialog.html").dialog({
+				autoOpen: false,
+				width: 600,
+				height: 400,
+				buttons: [
+					{
+						text: "Ok",
+						click: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				]
+				}
+				);
+	
+	if ($("#tapeDialog").dialog("isOpen")) {
+	    $("#tapeDialog").dialog("close");
+	}
+	else {
+	    $("#tapeDialog").dialog("open");
+    elkjs.refreshTapeDialog("tapeDiv");
+	}
+
+}
+
+function tapeFwd() {
+	elkjs.tapeFwd();
+}
+
+function tapeRew() {
+	elkjs.tapeRew();
+}
+
+function tapeFirst() {
+	elkjs.tapeFirst();
+}
+
+function tapeLast() {
+	elkjs.tapeLast();
+}
+
+function tapeEject() {
+	elkjs.tapeEject();
+}

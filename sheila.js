@@ -29,8 +29,8 @@ ElkJs.Sheila = function() {
 	self.soundMode = 0;
 	
 	self.romBank = 0;
-	self.intRomBank = 0;
-	self.extRom = 0;	
+	//self.intRomBank = 0;
+	//self.extRom = 0;	
 	self.screenMode = 0;
 
 	var screenaddrLo = 0;
@@ -245,12 +245,10 @@ ElkJs.Sheila = function() {
 			interrupt_status.transmit = false;
 		}
 		else if (addr == 5) {
-			self.romBank=val&0xF;
-            if (self.romBank>=0xC) self.extRom=1;
-            if ((self.romBank&0xC)==8)
+            if ((val&0xf)>=8) self.romBank=val&0xF;
+            else if (self.romBank>=0xC | self.romBank<8)
             {
-				self.extRom=0;
-                self.intRomBank=self.romBank;
+				self.romBank=val&0xF;
             }
             if (val&0x10) interrupt_status.display_end = false;
             if (val&0x20) interrupt_status.rtc = false;
@@ -270,9 +268,9 @@ ElkJs.Sheila = function() {
 			self.screenMode = (val & 0x38) >> 3;
 			recalcPalette();
 			self.soundMode = (val &6)>>1;
-			if (self.soundMode!=1) {
-				self.soundFreq=0;
-			}
+			//if (self.soundMode!=1) {
+			//	self.soundFreq=0;
+			//}
 			
 		}
 		else if (addr>7) {
@@ -322,22 +320,23 @@ ElkJs.Sheila = function() {
 		//current rom
 		//fe06,fe07,fe08,fe09,fe0a,fe0b,fe0c,fe0d,fe0e,fe0f
 		//4 bytes - number of 16mhz cycles since last display end interrupt
-
+	
 		self.write(0xfe00, buffer[offset+0]);
-	
-		//interrupt_status.nmi = false;
-		//interrupt_status.high_tone = false;
-		//interrupt_status.rtc = false;
-		//interrupt_status.display_end = false;
-		//interrupt_status.power_on = true;
-
-	
 		
+		v = buffer[offset+1];
+		interrupt_status.power_on = (v & 2) !=0;
+		interrupt_status.display_end = (v & 4)!=0;
+		interrupt_status.rtc = (v & 8) !=0;
+		interrupt_status.receive =  (v & 16) !=0;
+		interrupt_status.transmit =  (v & 32) !=0;
+		interrupt_status.high_tone =  (v & 64) !=0;	
+			
 		self.write(0xfe02, buffer[offset+2]);
 		self.write(0xfe03, buffer[offset+3]);
 		self.write(0xfe04, buffer[offset+4]);
 		self.write(0xfe05, buffer[offset+5]);
 		self.romBank = buffer[offset+6]&0xf;
+		//self.intRomBank=self.romBank;
 		for (var i = 6; i<16; i++) {
 			self.write(0xfe00+i, buffer[offset+i+1]);  //fe06,fe07,fe08,fe09,fe0a,fe0b,fe0c,fe0d,fe0e,fe0f
 		}

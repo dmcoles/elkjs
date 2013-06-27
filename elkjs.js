@@ -74,7 +74,7 @@ function ElkJs(output) {
 	//requestAnimationFrame(runframe);
 
 	function runframe() {
-		if (running & memory.loaded==3) {
+		if (running & memory.loaded==2) {
 			if (firstFrame) {
 				self.reset();
 				firstFrame = false;
@@ -118,12 +118,19 @@ function ElkJs(output) {
     }
 
 	self.reset = function () {
+	    //memory.reset();
+	    //sheila.reset();
+	    display.reset();
+	    processor.reset6502();
+	};
+	
+	self.hardReset = function () {
 	    memory.reset();
 	    sheila.reset();
 	    display.reset();
 	    processor.reset6502();
 	};
-	
+
 	self.pauseResume = function() {
 		running = !running;
 		return running;
@@ -145,7 +152,31 @@ function ElkJs(output) {
 	self.setAutoLoad = function(auto) {
 		uefHandler.setAutoLoad(auto);
 	}
+
+	self.refreshTapeDialog = function(tapeDialogName) {
+		$("#"+tapeDialogName+" span").text(uefHandler.filename);
+		uefHandler.populateTapeDataTable(tapeDialogName+" table");
+	}
 	
+	self.tapeFwd = function() {
+		uefHandler.tapeFwd();
+	}
 	
+	self.tapeRew = function() {
+		uefHandler.tapeRew();
+	}
+
+	self.tapeFirst = function() {
+		uefHandler.tapeFirst();
+	}
+	
+	self.tapeLast = function() {
+		uefHandler.tapeLast();
+	}
+
+	self.tapeEject = function() {
+		uefHandler.tapeEject();
+	}
+
 	return self;
 }

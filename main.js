@@ -28,6 +28,7 @@ function changeLoadSpeed() {
 function fileSelected(evt) {
 	var files = evt.target.files;
 	if (files.length>0) {
+		$("#btnTape").removeAttr('disabled');
 		elkjs.openFile(files[0]);
 	}
 	
@@ -47,7 +48,7 @@ function soundToggle() {
 	}
 }
 
-function toggleDialog() {
+function toggleTapeDialog() {
 
 	$("#tapeDialog").load("tapedialog.html").dialog({
 				autoOpen: false,
@@ -74,6 +75,17 @@ function toggleDialog() {
 
 }
 
+function toggleGamesDialog() {
+
+	if ($("#gamesDialog").dialog("isOpen")) {
+	    $("#gamesDialog").dialog("close");
+	}
+	else {
+	    $("#gamesDialog").dialog("open");
+	}
+
+}
+
 function tapeFwd() {
 	elkjs.tapeFwd();
 }
@@ -92,4 +104,5 @@ function tapeLast() {
 
 function tapeEject() {
 	elkjs.tapeEject();
+	$("#btnTape").attr('disabled','disabled');
 }

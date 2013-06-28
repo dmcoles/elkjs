@@ -2,12 +2,12 @@
 // written by Darren Coles
 
 function ElkJs(output) {
-	var frameSpeeds = new Array();
 
 	var d = new Date();
 	var startTime = d.getTime();
 	var lastFrame = startTime;
 	var frameCount = 0;
+
 
 	var running = true;
 	
@@ -79,6 +79,9 @@ function ElkJs(output) {
 				self.reset();
 				firstFrame = false;
 			}
+			
+			if (keyboard.break) self.reset();
+			
 			var d2 = new Date();
 			var currTime = d2.getTime();
 			var reqFrames = (currTime - startTime)/20;
@@ -104,8 +107,6 @@ function ElkJs(output) {
 			}
 		}
 		d2 = new Date();
-		frameSpeeds.push(d2.getTime()-currTime);
-		if (frameSpeeds.length>1000) frameSpeeds.pop();
 		var nextframe = Math.max(1,20-(d2.getTime()-currTime));
 		//console.info(nextframe);
 		setTimeout(runframe, nextframe );

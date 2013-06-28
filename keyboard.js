@@ -6,25 +6,12 @@ ElkJs.Keyboard = function () {
 
     self.active = true;
 
+	self.break = false;
+	
     var autoKeys = false;
     var autoKeyValues = new Array();
 
-    var keyStates = new Array();
-
-    keyStates[0] = 0; //13
-    keyStates[1] = 0; //12
-    keyStates[2] = 0;
-    keyStates[3] = 0;
-    keyStates[4] = 0;
-    keyStates[5] = 0;
-    keyStates[6] = 0;
-    keyStates[7] = 0;
-    keyStates[8] = 0;
-    keyStates[9] = 0;
-    keyStates[10] = 0;
-    keyStates[11] = 0;
-    keyStates[12] = 0;
-    keyStates[13] = 0;
+    var keyStates = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
 
     var keyCodes = {
         27: { row: 13, mask: 0x01 }, /* ESC */
@@ -97,6 +84,7 @@ ElkJs.Keyboard = function () {
         }
     }
     function registerKeyDown(keyNum) {
+		if (keyNum==123) self.break= true;
         var keyCode = keyCodes[keyNum];
         if (keyCode == null) return;
         keyStates[keyCode.row] |= keyCode.mask;
@@ -107,6 +95,7 @@ ElkJs.Keyboard = function () {
         if (self.active && !evt.metaKey) return false;
     }
     function registerKeyUp(keyNum) {
+		if (keyNum==123) self.break=false;
         var keyCode = keyCodes[keyNum];
         if (keyCode == null) return;
         keyStates[keyCode.row] &= ~(keyCode.mask);

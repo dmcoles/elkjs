@@ -65,22 +65,46 @@
 			<h3>ElkJs</h3>
 			<div>ElkJS is a javascript based emulator for the Acorn Electron. I was inspired to write this after contributing some work to the JSSpeccy project by Matt Westcott. The Sinclair Spectrum and Acorn Electron were two memorable machines from my younger years so I decided to write a Javascript Electron emulator as one did not already exist.<br/><br/>
 			<img src="acorn-electron-det2.jpg"/><br/><br/>
-			ElkJS aims to emulate the electron accurately enough to be able to play many of the classic games made for this machine. Some of my favourites are
+			ElkJS aims to emulate the electron accurately enough to be able to play many of the classic games made for this machine.
+			<br/><br />
+			The sourcecode for this emulator is available in my <a href="https://github.com/dmcoles/elkjs" >github</a> repository
+			
+			<br/><br/>
+			</div>
+			<h3>Usage</h3>
+			<div>
+			For the most part it should be pretty self explanatory. There are a few keyboard mappings you might need to be aware of:
+			
+			<ul>
+			<li>FUNC = ALT</li>
+			<li>COPY = HOME</li>
+			<li>BREAK = F12</li>
+			</ul>
+			
+			The emulation is fairly accurate and most games should work. Firetrack isnt 100% and does display some slight graphical corruption.
+			Exile appears to freeze after the game is loaded. All other games i have tried work fine.<br/><br/>
+			
+			The browse button allows you to open UEF files containing snapshots or tape images. You can also select ZIP files and the first
+			uef file found in the zip will be opened. <br/><br/>
+			
+			Most if not all games are easily obtainable in UEF format on the internet. <br/><br/>
+			
+			Some of my favourites are
 			<ul>
 			<li>Citadel</li>
 			<li>Repton series</li>
 			<li>Dunjunz</li>
 			</ul>
 			<br/><br/>
-			Most if not all games are easily obtainable in UEF format on the internet.
-			<br/><br/>
-			</div>
 			
+			</div>
 			<h3>Credits</h3>
 			<div>
 			<u>ElkJS</u><br/><br/>
-			6502 emulation core - Tom Walker (taken from Elkulator - ported to Javascript by Darren Coles)<br/>
-			Inflate and Zipping routines - August Lilleaas and M. Izumo <br/>
+			6502 emulation core - Tom Walker (taken from <a href="http://elkulator.acornelectron.co.uk/">Elkulator</a> - ported to Javascript by Darren Coles)<br/><br/>
+			Inflate and Zipping routines - <a href="https://github.com/augustl">August Lilleaas</a> and M. Izumo <br/><br />
+			Acorn Electron image from wikipedia by <a href="http://en.wikipedia.org/wiki/File:Acorn_Electron_4x3.jpg"> Bilby </a> <br/><br/>
+			Acorn Electron internals image from <a href="http://www.computerasylum.co.uk/computers/acorn-electron/index.html" >computer asylum</a>  <br/><br/>
 			Everything else - (c) Darren Coles 2013.<br/><br/>
 			Other Electron emulators of note:<br/><br/>
 			<a href="http://elkulator.acornelectron.co.uk" >Elkulator</a>
@@ -96,22 +120,25 @@
 			<canvas id = "ElkJsOutput" width="640" height="512" >
 			</canvas>
 			<div id = "buttonpanel">
-			<button onclick="reset()" id="btnReset">Reset</button>
+			<small><button onclick="reset()" id="btnReset">Reset</button>
 			<button onclick="pauseResume()" id="btnPause">Pause</button>
 			<button onclick="soundToggle()" id="btnSound">Sound off</button>
 			<button onclick="document.getElementById('selectedFile').click();" id="btnBrowse">Browse</button>
 			<input type="file" id="selectedFile" style="display: none;" />
-			<button onclick="toggleDialog()" >Tape</button>
+			<button id="btnTape" disabled="disabled" onclick="toggleTapeDialog()" >Tape</button>
+			<button onclick="toggleGamesDialog()" >Games</button>
 			<br/>
+			</small>
 			</div>
 			<div class="ui-widget">
+			<small>
 			Loading speed:
 			<select id="loadSpeed">
 				<option value="1">Normal</option>
 				<option selected="selected" value="2">Turbo</option>
 			</select> 
 			<input type="checkbox" id="autoLoad" checked="checked" onclick="changeAutoLoad()" >Auto load tapes<br>			
-            
+            </small>
 			</div>
 		</div>
 		<div id="tapeDialog">

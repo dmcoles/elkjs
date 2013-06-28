@@ -23,7 +23,7 @@ ElkJs.Sheila = function() {
 	
 	self.interrupt = false;
 	
-	var paletteRegs = new Array(8);
+	var paletteRegs = new Uint8Array([0,0,0,0,0,0,0,0]);
 	
 	self.soundFreq = 0;
 	self.soundMode = 0;
@@ -41,7 +41,7 @@ ElkJs.Sheila = function() {
 	self.caps = false;
 	self.tapeMotor = false;
 	
-	self.palette = new Array(16);
+	self.palette = new Uint8Array(16);
 	for (var i = 0; i<16; i++) self.palette[i] = 0;
 
 	self.casetteDataRead = false;
@@ -110,7 +110,7 @@ ElkJs.Sheila = function() {
 	}
 
 	function recalcPalette() {
-		var cols = new Array(4);
+		var cols = new Uint8Array(4);
 		switch (self.screenMode) {
 			case 0:
 			case 3:

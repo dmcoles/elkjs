@@ -1,0 +1,38 @@
+
+<div hidden="hidden" id="gamesDialogMain" Title="Select game">
+<div style="overflow-y: scroll; height: 230px; width: 100%;border-style:solid">
+	<table id="gamesTable" style="height: 100%; width: 100%">
+	
+	<tr style="height: 10px;background-color: blue"><th>Game</th><th>Publisher</th><th></th></tr>
+	<tr style="height: 10px;background-color: gray"><td>Snapper</td><td>Acornsoft</td><td><button onclick="elkjs.openFile('snapper_snap.uef');" >Load</button></td></tr>
+	<tr style="height: 10px;background-color: silver"><td>Citadel</td><td>Superior Software</td><td><button onclick="elkjs.openFile('citadel_snap.uef');">Load</button></td></tr>	
+	<tr style="height: 10px;background-color: gray"><td>Starship Command</td><td>Acornsoft</td><td><button onclick="elkjs.openFile('starshipcommand_snap.uef');" >Load</button></td></tr>	
+	<tr style="height: 10px;background-color: silver"><td>Repton 2</td><td>Superior Software</td><td><button onclick="elkjs.openFile('repton2_snap.uef');" >Load</button></td></tr>	
+	<tr style="height: 10px;background-color: gray"><td>Boxer</td><td>Acornsoft</td><td><button onclick="elkjs.openFile('boxer_snap.uef');" >Load</button></td></tr>	
+	<tr style="height: 10px;background-color: silver"><td>Cybertron Mission</td><td>Program Power</td><td><button onclick="elkjs.openFile('cybertronmission_snap.uef');">Load</button></td></tr>	
+	<tr style="height: 10px;background-color: gray"><td>Elite</td><td>Acornsoft</td><td><button onclick="elkjs.openFile('elite_snap.uef');">Load</button></td></tr>	
+	
+
+	</table>
+</div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$("#gamesDialogMain").dialog({
+					autoOpen: false,
+					width: 600,
+					height: 400,
+					buttons: [
+						{
+							text: "Ok",
+							click: function() {
+								$( this ).dialog( "close" );
+							}
+						}
+					]
+					}
+					);
+	});
+
+</script>

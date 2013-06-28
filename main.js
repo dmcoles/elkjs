@@ -17,10 +17,6 @@ function pauseResume() {
 	}
 }
 
-function openFile() {
-	elkjs.openFile( $("#gameSelect").val());
-}
-
 function changeLoadSpeed() {
 	elkjs.setLoadSpeed($("#loadSpeed").val());
 }
@@ -49,39 +45,23 @@ function soundToggle() {
 }
 
 function toggleTapeDialog() {
-
-	$("#tapeDialog").load("tapedialog.html").dialog({
-				autoOpen: false,
-				width: 600,
-				height: 400,
-				buttons: [
-					{
-						text: "Ok",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					}
-				]
-				}
-				);
 	
-	if ($("#tapeDialog").dialog("isOpen")) {
-	    $("#tapeDialog").dialog("close");
+	if ($("#tapeDialogMain").dialog("isOpen")) {
+	    $("#tapeDialogMain").dialog("close");
 	}
 	else {
-	    $("#tapeDialog").dialog("open");
-    elkjs.refreshTapeDialog("tapeDiv");
+	    $("#tapeDialogMain").dialog("open");
+    elkjs.refreshTapeDialog("tapeDialogMain");
 	}
 
 }
 
 function toggleGamesDialog() {
-
-	if ($("#gamesDialog").dialog("isOpen")) {
-	    $("#gamesDialog").dialog("close");
+	if ($("#gamesDialogMain").dialog("isOpen")) {
+	    $("#gamesDialogMain").dialog("close");
 	}
 	else {
-	    $("#gamesDialog").dialog("open");
+	    $("#gamesDialogMain").dialog("open");
 	}
 
 }

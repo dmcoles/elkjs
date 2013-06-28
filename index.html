@@ -23,28 +23,11 @@
 		<script src="main.js"></script>
 		
 		<script>
-		$(function() {
-			/*$("#tapeDialog").dialog({
-				autoOpen: false,
-				width: 600,
-				height: 400,
-				buttons: [
-					{
-						text: "Ok",
-						click: function() {
-							$( this ).dialog( "close" );
-						}
-					}
-				]
-				
-			});*/	
-		});
-		
-		</script>
-
-		<script>
 			$(function() {
 				$("button").button();
+				$("#tapeDialog").load("tapedialog.html");	
+				$("#gamesDialog").load("gamesdialog.html");	
+
 				document.getElementById('selectedFile').addEventListener('change', fileSelected, false);
 				document.getElementById('loadSpeed').addEventListener('change', changeLoadSpeed, false);
 				$( "#accordion" ).accordion();
@@ -141,7 +124,9 @@
             </small>
 			</div>
 		</div>
-		<div id="tapeDialog">
+		<div id="tapeDialog" >
+		</div>
+		<div id="gamesDialog">
 		</div>
 	</body>
 </html>

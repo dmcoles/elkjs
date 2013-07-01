@@ -1,7 +1,7 @@
 #elkjs
 {
     position:absolute;
-    top:60px;
+    top:100px;
     left: 420px;
 }
 
@@ -9,10 +9,20 @@
 {
 	position: absolute;
 	width: 400px;
-	top: 60px;
+	top: 100px;
 	height: 600px;
 	font-size: 0.75em;
 
+}
+
+#webring
+{
+	position: absolute;
+	width: 400px;
+	top: 40px;
+	height: 60px;
+	font-size: 1em;
+    border: 0;   
 }
 
 #buttonpanel

@@ -3,8 +3,7 @@
 
 function ElkJs(output) {
 
-	var d = new Date();
-	var startTime = d.getTime();
+	var startTime = window.performance.now();
 	var lastFrame = startTime;
 	var frameCount = 0;
 
@@ -83,7 +82,7 @@ function ElkJs(output) {
 			if (keyboard.break) self.reset();
 			
 			var d2 = new Date();
-			var currTime = d2.getTime();
+			var currTime = window.performance.now();
 			var reqFrames = (currTime - startTime)/20;
 			//while (frameCount< reqFrames)
 			{
@@ -106,8 +105,7 @@ function ElkJs(output) {
 				frameCount++;
 			}
 		}
-		d2 = new Date();
-		var nextframe = Math.max(1,20-(d2.getTime()-currTime));
+		var nextframe = Math.max(1,20-(window.performance.now()-currTime));
 		//console.info(nextframe);
 		setTimeout(runframe, nextframe );
 		//requestAnimationFrame(runframe);

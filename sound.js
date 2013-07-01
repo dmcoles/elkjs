@@ -78,9 +78,12 @@ ElkJs.Sound = function(opts) {
 		if (audioBuffer==null) return;
 		for (var i=0; i<count; i++) {
 			frameSamples++;
-			if (!freq | mode!=1) {
+			if (mode!=1) {
 				audioBuffer.push(0);
-			}
+            }
+            else if (!freq) {
+                audioBuffer.push(sampleValue);
+            } 
 			else {
 				audioBuffer.push(sampleValue);
 

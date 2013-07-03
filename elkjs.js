@@ -68,6 +68,7 @@ function ElkJs(output) {
 		sheila: sheila
 	});
 
+	processor.initialise();
 	
 	setTimeout(runframe, 20);
 	//requestAnimationFrame(runframe);

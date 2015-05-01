@@ -86,3 +86,28 @@ function tapeEject() {
 	elkjs.tapeEject();
 	$("#btnTape").attr('disabled','disabled');
 }
+
+function saveSnapshot() {
+    var bytes = elkjs.saveSnapshot();
+
+    var binary = '';
+    var len = bytes.length;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    filedata = 'data:application/octet-stream;base64,'
+          + encodeURIComponent(window.btoa(binary));
+
+    var pom = document.createElement('a');
+    pom.setAttribute('href', filedata);
+    pom.setAttribute('download', 'snapshot.uef');
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}

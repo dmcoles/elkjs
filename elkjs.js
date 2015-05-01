@@ -145,6 +145,10 @@ function ElkJs(output) {
 		 uefHandler.loadUEF(file,autoLoad);
 	}
 	
+    self.saveSnapshot = function() {
+        return uefHandler.createUEFSnapshot();
+    }
+
 	self.setLoadSpeed = function(speed) {
 		uefHandler.setLoadSpeed(speed);
 	}

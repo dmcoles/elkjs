@@ -19,7 +19,7 @@ ElkJs.Display = function (opts) {
 
     var buf8 = null;
     var data = null;
-
+   
     var screenStart = 0;
     var screenRowStart = 0;
 
@@ -53,6 +53,24 @@ ElkJs.Display = function (opts) {
     var colors;
 
     var widths = new Uint16Array([0x280, 0x280, 0x280, 0x280, 0x140, 0x140, 0x140, 0x140]);
+
+    imageData = context.createImageData(640, 512);
+
+    if (typeof (imageData.data.set) != 'undefined') {
+        buf8 = new Uint8Array(imageData.data.buffer);
+        data = new Uint32Array(imageData.data.buffer);
+
+        data[0] = 0x01020304;
+        if (buf8[0] = 0x04) {
+            colours = littleEndianColours;
+        } else {
+            colours = bigEndianColours;
+        }
+
+    }
+    else {
+        data = imageData.data;
+    }
 
     function optimisedScreenDraw() {
 
@@ -697,27 +715,8 @@ ElkJs.Display = function (opts) {
         screenStart = sheila.getScreenAddress();
 
         if (imageData != null) {
-            if (buf8 != null) imageData.data.set(buf8);
+            //if (buf8 != null) imageData.data.set(buf8);
             context.putImageData(imageData, 0, 0); // at coords 0,0
-        }
-
-        imageData = context.createImageData(640, 512);
-
-        if (typeof (imageData.data.set) != 'undefined') {
-            buf = new ArrayBuffer(imageData.data.length);
-            buf8 = new Uint8Array(buf);
-            data = new Uint32Array(buf);
-
-            data[0] = 0x01020304;
-            if (buf8[0] = 0x04) {
-                colours = littleEndianColours;
-            } else {
-                colours = bigEndianColours;
-            }
-
-        }
-        else {
-            data = imageData.data;
         }
 
         self.beamRow = 0;

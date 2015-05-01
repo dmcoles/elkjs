@@ -4,8 +4,8 @@
 ElkJs.UEFFile = function (opts) {
     var self = {};
 
-	var tableName = "";
-	
+    var tableName = "";
+
     var snapshotLoaded = false;
 
     var tapeLoaded = false;
@@ -29,18 +29,31 @@ ElkJs.UEFFile = function (opts) {
 
     var fastLoad = true;
 
-	self.filename = "";
-	
+    self.filename = "";
+
+    function makeChunk(code, data) {
+        var bytes = new Array();
+        bytes.push(code & 0xff);
+        bytes.push(code >> 8);
+        bytes.push(data.length & 0xff);
+        bytes.push((data.length >> 8) & 0xff);
+        bytes.push((data.length >> 16) & 0xff);
+        bytes.push((data.length >> 24) & 0xff);
+        bytes = bytes.concat(data);
+        return bytes;
+    }
+
+
     function load_filereader(file, callback, callback2) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            callback(e.target.result,callback2);
+            callback(e.target.result, callback2);
         };
 
         reader.readAsArrayBuffer(file);
     }
 
-    function load_binary_resource(url, callback,callback2) {
+    function load_binary_resource(url, callback, callback2) {
 
         var oReq = new XMLHttpRequest();
         oReq.open("GET", url, true);
@@ -50,7 +63,7 @@ ElkJs.UEFFile = function (opts) {
         oReq.onload = function (oEvent) {
             var arrayBuffer = oReq.response; // Note: not oReq.responseText
             if (arrayBuffer) {
-                callback(arrayBuffer,callback2);
+                callback(arrayBuffer, callback2);
             }
         };
 
@@ -113,7 +126,7 @@ ElkJs.UEFFile = function (opts) {
             chunklen = (buffer[offset + 2]) + (buffer[offset + 3] << 8) + (buffer[offset + 4] << 16) + (buffer[offset + 5] << 24);
             offset += 6;
             switch (chunktype) {
-                //snapshot chunks 
+                //snapshot chunks             
                 case 0x0400: //6502 state
                     // update,a, p (status), x, y, s, pc
                     processor.loadSnapshot(buffer, offset + 1);
@@ -128,33 +141,33 @@ ElkJs.UEFFile = function (opts) {
                     snapshotLoaded = true;
                     break;
 
-                //tape data chunks 
+                //tape data chunks             
                 case 0x100:
                     tapeLoaded = true;
                     var data = new Array();
                     for (i = 0; i < chunklen; i++) { data.push(buffer[offset + i]); }
                     tapeData.push({
                         type: "implicitDataBlock",
-						desc: "data block",
+                        desc: "data block",
                         data: data
                     });
                     break;
 
                 case 0x101:
                     tapeData.push({
-						desc: "multiplexed data block"
+                        desc: "multiplexed data block"
                     });
                     break;
 
                 case 0x102:
                     tapeData.push({
-						desc: "explicit tape data block"
+                        desc: "explicit tape data block"
                     });
                     break;
 
                 case 0x104:
                     tapeData.push({
-						desc: "defined tape format data block"
+                        desc: "defined tape format data block"
                     });
                     break;
 
@@ -163,7 +176,7 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "carrier",
-						desc: "carrier",
+                        desc: "carrier",
                         cycleCount: cycleCount
                     });
 
@@ -176,7 +189,7 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "carrierWithDummy",
-						desc: "carrier with dummy byte",
+                        desc: "carrier with dummy byte",
                         preCycleCount: cycleCount1,
                         postCycleCount: cycleCount2
                     });
@@ -189,7 +202,7 @@ ElkJs.UEFFile = function (opts) {
 
                     tapeData.push({
                         type: "integerGap",
-						desc: "integer tap",
+                        desc: "integer tap",
                         gapTime: gap
                     });
                     break;
@@ -198,7 +211,7 @@ ElkJs.UEFFile = function (opts) {
                     tapeData.push({
                         desc: "floating point gap"
                     });
-					
+
                     break;
 
                 case 0x113:
@@ -255,15 +268,35 @@ ElkJs.UEFFile = function (opts) {
 
     }
 
-    self.loadUEF = function (file,autoLoadCallback) {
+    self.loadUEF = function (file, autoLoadCallback) {
         if (Object.prototype.toString.call(file) == '[object File]') {
-			self.filename = file.filename;
+            self.filename = file.filename;
             load_filereader(file, processUEF, autoLoadCallback);
         }
         else {
             load_binary_resource(file, processUEF, autoLoadCallback)
-			self.filename=file;
+            self.filename = file;
         }
+
+        self.createUEFSnapshot();
+    }
+
+    self.createUEFSnapshot = function () {
+
+        var bytes = new Array();
+        bytes.push(0x55); bytes.push(0x45); bytes.push(0x46); bytes.push(0x20); bytes.push(0x46); bytes.push(0x69); bytes.push(0x6c); bytes.push(0x65); bytes.push(0x21); bytes.push(0x0); bytes.push(0xa); bytes.push(0x0);
+
+        var temp = new Array();
+        temp.push(0x10);
+        //target machine chunk
+        bytes = bytes.concat(makeChunk(0x5, temp));
+        bytes = bytes.concat(makeChunk(0x400, processor.makeSnapshotData()));
+        bytes = bytes.concat(makeChunk(0x401, sheila.makeSnapshotData()));
+        bytes = bytes.concat(makeChunk(0x410, memory.makeSnapshotData()));
+
+
+
+        return bytes;
     }
 
     self.snapshotLoaded = function () {
@@ -332,7 +365,7 @@ ElkJs.UEFFile = function (opts) {
         }
 
         if (processNext) {
-			if (tableName!="") self.populateTapeDataTable(tableName);
+            if (tableName != "") self.populateTapeDataTable(tableName);
             if (++tapePos > tapeData.length) {
                 tapePos = 0;
             }
@@ -361,69 +394,69 @@ ElkJs.UEFFile = function (opts) {
         fastLoad = speed > 1;
     }
 
-	self.populateTapeDataTable = function(tablename) {
-		tableName = tablename;
-		$("#"+tablename+" tr").remove();
-		$("#"+tablename).append('<tr style="height: 20px;background-color: blue"><th> Chunk</th><th> Description</th></tr>');
-		if (!tapeData) return;
-		
-		for (var i = 0; i<tapeData.length; i++) {
-			if (i==tapePos) {
-				$("#"+tablename).append('<tr style="height: 20px;background-color: white"><td>'+i.toString()+'</td><td>'+tapeData[i].desc+'</td></tr>');
-			}
-			else {
-				$("#"+tablename).append('<tr style="height: 20px;background-color: gray"><td>'+i.toString()+'</td><td>'+tapeData[i].desc+'</td></tr>');
-			}
-		}
-	}
-	
-	self.tapeFwd = function() {
-		if (!tapeData) return;
-		if (tapePos<tapeData.length-1) tapePos++;
-        highTone = false;
-        currentTime = 0;
-        dataOffset = 0;
-        dataBit = -1;
-		if (tableName!="") self.populateTapeDataTable(tableName);
-	}
-	
-	self.tapeRew = function() {
-		if (!tapeData) return;
-		if (tapePos>0) tapePos--;
-        highTone = false;
-        currentTime = 0;
-        dataOffset = 0;
-        dataBit = -1;
-		if (tableName!="") self.populateTapeDataTable(tableName);
-	}
+    self.populateTapeDataTable = function (tablename) {
+        tableName = tablename;
+        $("#" + tablename + " tr").remove();
+        $("#" + tablename).append('<tr style="height: 20px;background-color: blue"><th> Chunk</th><th> Description</th></tr>');
+        if (!tapeData) return;
 
-	self.tapeFirst = function() {
-		if (!tapeData) return;
-		tapePos = 0;
-        highTone = false;
-        currentTime = 0;
-        dataOffset = 0;
-        dataBit = -1;
-		if (tableName!="") self.populateTapeDataTable(tableName);
-	}
-	
-	self.tapeLast = function() {
-		if (!tapeData) return;
-		tapePos = tapeData.length-1;
-        highTone = false;
-        currentTime = 0;
-        dataOffset = 0;
-        dataBit = -1;
-		if (tableName!="") self.populateTapeDataTable(tableName);
-	}
+        for (var i = 0; i < tapeData.length; i++) {
+            if (i == tapePos) {
+                $("#" + tablename).append('<tr style="height: 20px;background-color: white"><td>' + i.toString() + '</td><td>' + tapeData[i].desc + '</td></tr>');
+            }
+            else {
+                $("#" + tablename).append('<tr style="height: 20px;background-color: gray"><td>' + i.toString() + '</td><td>' + tapeData[i].desc + '</td></tr>');
+            }
+        }
+    }
 
-	self.tapeEject = function() {
-		if (!tapeData) return;
-		tapeLoaded = false;
-		tapeData = new Array();
-		tapePos = 0;
-		if (tableName!="") self.populateTapeDataTable(tableName);
-	}
-	
+    self.tapeFwd = function () {
+        if (!tapeData) return;
+        if (tapePos < tapeData.length - 1) tapePos++;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+        if (tableName != "") self.populateTapeDataTable(tableName);
+    }
+
+    self.tapeRew = function () {
+        if (!tapeData) return;
+        if (tapePos > 0) tapePos--;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+        if (tableName != "") self.populateTapeDataTable(tableName);
+    }
+
+    self.tapeFirst = function () {
+        if (!tapeData) return;
+        tapePos = 0;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+        if (tableName != "") self.populateTapeDataTable(tableName);
+    }
+
+    self.tapeLast = function () {
+        if (!tapeData) return;
+        tapePos = tapeData.length - 1;
+        highTone = false;
+        currentTime = 0;
+        dataOffset = 0;
+        dataBit = -1;
+        if (tableName != "") self.populateTapeDataTable(tableName);
+    }
+
+    self.tapeEject = function () {
+        if (!tapeData) return;
+        tapeLoaded = false;
+        tapeData = new Array();
+        tapePos = 0;
+        if (tableName != "") self.populateTapeDataTable(tableName);
+    }
+
     return self;
 }

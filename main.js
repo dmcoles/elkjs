@@ -87,6 +87,20 @@ function tapeEject() {
 	$("#btnTape").attr('disabled','disabled');
 }
 
+function fullScreen() {
+    if ($('#accordion').is(':hidden')) {
+        $("#accordion").show();
+        $("#ElkJsOutput").height(512);
+        $("#elkjs").css("left", 420);
+        $("#btnFullscreen span").text("Expand");
+    }
+    else {
+        $("#accordion").hide();
+        $("#ElkJsOutput").height(window.innerHeight - 80);
+        $("#elkjs").css("left", 20);
+        $("#btnFullscreen span").text("Shrink");
+    }
+}
 function saveSnapshot() {
     var bytes = elkjs.saveSnapshot();
 

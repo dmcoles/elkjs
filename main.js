@@ -37,10 +37,10 @@ function changeAutoLoad() {
 function soundToggle() {
 	var sound = elkjs.soundToggle();
 	if (sound) {
-		$("#btnSound span").text("Sound off");
+		$("#btnSound span").text("Turn sound off");
 	}
 	else {
-		$("#btnSound span").text("Sound on");
+		$("#btnSound span").text("Turn sound on");
 	}
 }
 

@@ -9,8 +9,10 @@ function ElkJs(output) {
 
 
 	var running = true;
-	
-	var soundEnabled = true;
+
+	var soundInit = false;
+
+	var soundEnabled = false;
 	
 	var requestAnimationFrame = (
 		//window.requestAnimationFrame || window.msRequestAnimationFrame ||
@@ -136,7 +138,11 @@ function ElkJs(output) {
 		return running;
 	}
 	
-	self.soundToggle = function() {
+	self.soundToggle = function () {
+		if (soundInit == false) {
+			sound.soundInit();
+			soundInit = true;
+		}
 		soundEnabled = !soundEnabled;
 		return soundEnabled;
 	}

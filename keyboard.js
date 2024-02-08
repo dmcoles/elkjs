@@ -15,6 +15,7 @@ ElkJs.Keyboard = function () {
 
     var keyCodes = {
         27: { row: 13, mask: 0x01 }, /* ESC */
+        223: { row: 13, mask: 0x01 }, /* ESC */
         49: { row: 12, mask: 0x01 }, /* 1 */
         50: { row: 11, mask: 0x01 }, /* 2 */
         51: { row: 10, mask: 0x1 }, /* 3 */
@@ -26,6 +27,7 @@ ElkJs.Keyboard = function () {
         57: { row: 4, mask: 0x1 }, /* 9 */
         48: { row: 3, mask: 0x1 }, /* 0 */
         173: { row: 2, mask: 0x1 }, /* - */
+        189: { row: 2, mask: 0x1 }, /* - */
         37: { row: 1, mask: 0x1 }, /* left arrow */
         39: { row: 0, mask: 0x1 }, /* right arrow */
 
@@ -55,7 +57,9 @@ ElkJs.Keyboard = function () {
         75: { row: 5, mask: 0x4 }, /* K */
         76: { row: 4, mask: 0x4 }, /* L */
         59: { row: 3, mask: 0x4 }, /* ; */
+        186: { row: 3, mask: 0x4 }, /* ; */
         222: { row: 2, mask: 0x4 }, /* : */
+        192: { row: 2, mask: 0x4 }, /* : */
         13: { row: 1, mask: 0x4 }, /* enter */
         //??: {row: 0, mask: 0x4}, /* none */
 
